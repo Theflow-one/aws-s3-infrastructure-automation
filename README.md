@@ -19,3 +19,12 @@ This project implements a **Self-Healing Backup Pipeline** on Ubuntu 24.04, orch
 1. Ensure AWS CLI is configured with an IAM Role (Least Privilege).
 2. Make the script executable: `chmod +x s3-backup.sh`.
 3. Schedule the job: `crontab -e`.
+
+## Security & Governance (IAM)
+To adhere to the **Principle of Least Privilege (PoLP)**, this does not use Admin credentials. It uses a specific IAM policy (see `iam-policy.json`) that restricts acces solely to the target backup bucket.
+
+### Governance Rules,
+* **Scope** Access is limited to a single S3 ARN.
+* **Actions:** Only `Put`, `List`, and `Delete` (for sync) are permitted.
+* **Exclusions:** Native SSH and AWS metadata are ignored via `.gitignore` and script-level `--exclude` flags.
+
